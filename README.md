@@ -21,3 +21,8 @@ Design and implement a &quot;_ **Cat Shelter** _&quot; **web application** (cont
   - Deletes specific cat from database. Changes must be persisted in &quot;database&quot;
 - **Search Cat**
   - Search in cat &quot;database&quot; by some **query\*\*** string\*\* and shows the results if any
+
+## To get it started:
+
+- npm i
+- npm start (The app starts on port 3000)

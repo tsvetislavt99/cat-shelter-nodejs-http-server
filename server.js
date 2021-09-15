@@ -3,9 +3,11 @@ import fs from 'fs';
 import qs from 'querystring';
 import path from 'path';
 import formidable from 'formidable';
+import imageLoader from './handlers/imagesHandler.js';
+import homeHandler from './handlers/homeHandler.js';
 const port = process.argv[2];
 
-//Load JSON DBs
+//Load JSON DB
 const breedsJSON = fs.readFileSync('./db/breeds.json');
 const breedsDB = JSON.parse(breedsJSON);
 
@@ -13,45 +15,12 @@ http
   .createServer((req, res) => {
     //****************************Request logger****************************
     console.log(`Method: ${req.method}\nPath: ${req.url}`);
-
-    if (
-      req.url.startsWith('/content/images/') &&
-      req.url !== '/content/images/pawprint.ico' &&
-      req.method === 'GET'
-    ) {
-      let img = fs.readFileSync(`.${req.url}`);
-      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-      res.end(img);
-    }
+    imageLoader(req, res);
 
     switch (req.url) {
       //****************************Home page****************************
       case '/':
-        res.writeHead(200, 'OK', { 'Content-Type': 'text/html' });
-        let indexPage = fs.readFileSync('./views/home/index.html');
-        const allCats = JSON.parse(fs.readFileSync('./db/cats.json'));
-        const myCats = allCats.map(
-          (cat) => `<li>
-          <img
-            src="./content/images/${cat.image}"
-            alt="${cat.breed} Cat"
-          />
-          <h3></h3>
-          <p><span>Breed: </span>${cat.breed} Cat</p>
-          <p>
-            <span>Description: </span>${cat.description}
-          </p>
-          <ul class="buttons">
-            <li class="btn edit"><a href="">Change Info</a></li>
-            <li class="btn delete"><a href="">New Home</a></li>
-          </ul>
-        </li>`
-        );
-        let loadedCatsPage = indexPage
-          .toString()
-          .replace('{{catsList}}', myCats);
-        res.write(loadedCatsPage);
-        res.end();
+        homeHandler(req, res);
         break;
       //****************************Add breed page****************************
       case '/add-breed':
@@ -137,6 +106,14 @@ http
         });
         let iconFile = fs.readFileSync('./content/images/pawprint.ico');
         res.write(iconFile);
+        res.end();
+        break;
+      case '/js/index.js':
+        res.writeHead(200, 'OK', {
+          'Content-type': 'application/javascript',
+        });
+        let js = fs.readFileSync('./js/index.js');
+        res.write(js);
         res.end();
         break;
       default:
