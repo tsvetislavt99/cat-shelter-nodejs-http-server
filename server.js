@@ -4,6 +4,7 @@ import homeHandler from './handlers/homeHandler.js';
 import addBreedHandler from './handlers/addBreedHandler.js';
 import addCatHandler from './handlers/addCatHandler.js';
 import staticHandler from './handlers/otherStaticFilesHandler.js';
+import deleteHandler from './handlers/deleteHandler.js';
 const port = process.argv[2];
 
 http
@@ -18,6 +19,8 @@ http
       addBreedHandler(req, res);
     } else if (req.url === '/add-cat') {
       addCatHandler(req, res);
+    } else if (req.url.startsWith('/delete-cat/')) {
+      deleteHandler(req, res);
     }
   })
   .listen(port, () => {

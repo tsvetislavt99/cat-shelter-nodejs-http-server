@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
+import uniqid from 'uniqid';
 import formidable from 'formidable';
 
 export default function addCatHandler(req, res) {
@@ -43,7 +44,7 @@ export default function addCatHandler(req, res) {
 
         let allCats = JSON.parse(data);
         allCats.push({
-          id: allCats.length + 1,
+          id: uniqid(),
           ...fields,
           image: files.upload.name,
         });

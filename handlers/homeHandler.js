@@ -10,7 +10,7 @@ export default function homeHandler(req, res) {
             src="./content/images/${cat.image}"
             alt="${cat.breed} Cat"
           />
-          <h3>${cat.name}</h3>
+          <h3 id="${cat.id}">${cat.name}</h3>
           <p><span>Breed: </span>${cat.breed} Cat</p>
           <p>
             <span>Description: </span>${cat.description}
